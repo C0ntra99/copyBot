@@ -1,13 +1,12 @@
 '''
-Post to a bot account instead x
-Handle multiple lines of input x
+Post to a bot account instead
+Handle multiple lines of input
 Handle emojiis/unicode characters
 Add reddit api to randomly grab from r/copyPasta x
-Add reddit api to default config file x
+Add reddit api to default config file
 add requirments.txt x?
     python-twitter
     praw
-make it so it does not double post threads
 '''
 
 import twitter
@@ -94,15 +93,25 @@ def twitter_post(r_title, r_body):
             a = input("[!]This will be over 15 tweets, due to twitter API limit there must be a 15 minute wait after 15 tweets. would you like to continue?[Y/n]: ")
             if a == '':
                 a = 'Y'
-                for num, tweet in reversed(list(enumerate(newTweet))):
-                    post = t_api.PostUpdate(tweet)
+                for num, tweet in enumerate(newTweet):
+                    if num == 0:
+                        post = t_api.PostUpdate(tweet)
+                        #print(len(n_tweet[num]))
+                    else:
+                        post = t_api.PostUpdate(tweet,in_reply_to_status_id=lastTweetId)
+                        #print(len(n_tweet[num]))
                     lastTweetId = post.id
                     print("Tweet: {} \nTweetID: {}".format(tweet,lastTweetId))
             else:
                 sys.exit()
         else:
-            for num, tweet in reversed(list(enumerate(newTweet))):
-                post = t_api.PostUpdate(tweet)
+            for num, tweet in enumerate(newTweet):
+                if num == 0:
+                    post = t_api.PostUpdate(tweet)
+                    #print(len(n_tweet[num]))
+                else:
+                    post = t_api.PostUpdate(tweet,in_reply_to_status_id=lastTweetId)
+                    #print(len(n_tweet[num]))
                 lastTweetId = post.id
                 print("Tweet: {} \nTweetID: {}".format(tweet,lastTweetId))
 
