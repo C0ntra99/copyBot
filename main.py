@@ -88,22 +88,19 @@ def twitter_post(r_title, r_body):
                 newTweet.append(lastTweet)
 
         print("[*]Total tweets: {}".format(len(newTweet)))
-        print(newTweet)
         if len(newTweet) > 15:
-            a = input("[!]This will be over 15 tweets, due to twitter API limit there must be a 15 minute wait after 15 tweets. would you like to continue?[Y/n]: ")
-            if a == '':
-                a = 'Y'
-                for num, tweet in enumerate(newTweet):
-                    if num == 0:
-                        post = t_api.PostUpdate(tweet)
-                        #print(len(n_tweet[num]))
-                    else:
-                        post = t_api.PostUpdate(tweet,in_reply_to_status_id=lastTweetId)
-                        #print(len(n_tweet[num]))
-                    lastTweetId = post.id
-                    print("Tweet: {} \nTweetID: {}".format(tweet,lastTweetId))
-            else:
-                sys.exit()
+            print("[!]This will be over 15 tweets, due to twitter API limit there must be a 15 minute wait after 15 tweets. Cancel in 15 seconds to stop the tweet.")
+            time.sleep(15)
+            for num, tweet in enumerate(newTweet):
+                if num == 0:
+                    post = t_api.PostUpdate(tweet)
+                    #print(len(n_tweet[num]))
+                else:
+                    post = t_api.PostUpdate(tweet,in_reply_to_status_id=lastTweetId)
+                    #print(len(n_tweet[num]))
+                lastTweetId = post.id
+                print("Tweet: {} \nTweetID: {}".format(tweet,lastTweetId))
+
         else:
             for num, tweet in enumerate(newTweet):
                 if num == 0:
